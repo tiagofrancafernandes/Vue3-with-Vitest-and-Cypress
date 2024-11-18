@@ -1,6 +1,20 @@
+<script setup lang="js">
+const props = defineProps({
+    hasMarker: {
+        type: Boolean,
+        defaul: false,
+    },
+});
+</script>
+
 <template>
     <div class="item">
-        <i>
+        <i
+            class="cursor-pointer hover:text-red-500"
+            :class="{
+                'text-red-500': props?.hasMarker,
+            }"
+        >
             <slot name="icon"></slot>
         </i>
         <div class="details">
@@ -13,15 +27,23 @@
 </template>
 
 <style scoped>
+.text-red-500, .hover\:text-red-500:hover {
+    color: red;
+}
+
 .item {
     margin-top: 2rem;
     display: flex;
     position: relative;
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .details {
     flex: 1;
     margin-left: 1rem;
+    padding: 0 0.5rem;
 }
 
 i {

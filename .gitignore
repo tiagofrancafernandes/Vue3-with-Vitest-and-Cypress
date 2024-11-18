@@ -28,3 +28,11 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+*no*commit*
+*No*Commit*
+*NO*COMMIT*
+*.bkp.*
+*.bkp
+*.log
+*.out
+_ide_helper*

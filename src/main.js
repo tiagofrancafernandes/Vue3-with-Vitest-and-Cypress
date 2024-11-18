@@ -1,4 +1,10 @@
 import './assets/main.css';
+import "toastify-js/src/toastify.css";
+
+import Toast from '@/Libs/Toast'
+
+globalThis.Toast = Toast;
+globalThis.toast = Toast;
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
