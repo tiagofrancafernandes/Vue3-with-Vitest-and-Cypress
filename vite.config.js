@@ -36,8 +36,6 @@ export default defineConfig(({ command, mode }) => {
         // vite config
         define: {
             __APP_ENV__: JSON.stringify(loadedEnv.APP_ENV),
-            _env: loadedEnv,
-            env: `${env}`,
         },
         plugins: [vue(), vueDevTools()],
         resolve: {
