@@ -42,8 +42,7 @@ const posts = ref([]);
 onMounted(() => {
     // posts.value = PostItemFactory.generateItems(15); // dynamic fake items
     posts.value = staticFakeItems;
-    balance.value = positiveNumberOr(15, 0);
-    console.log('onMounted');
+    refreshBalance();
 });
 
 const fetchMorePosts = () => {
