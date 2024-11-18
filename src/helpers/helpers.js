@@ -75,7 +75,7 @@ export const toNumberOr = (data, defaultValue = null) => {
     return isNumeric(data) ? Number(data) : defaultValue;
 }
 
-export const positiveNumberOr = (data, acceptZero = true, defaultValue = null) => {
+export const positiveNumberOr = (data, acceptZero = true, defaultValue = 0) => {
     if (isNumeric(acceptZero)) {
         defaultValue = defaultValue ?? acceptZero;
         acceptZero = true;

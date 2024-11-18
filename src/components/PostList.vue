@@ -17,7 +17,7 @@ import IconHeart from './icons/IconHeart.vue';
 
 const balanceStore = useBalanceStore();
 const { name, doubleCount, balance } = storeToRefs(balanceStore);
-const { increment, refreshBalance } = balanceStore;
+const { increment, refreshBalance, setBalance, getBalance } = balanceStore;
 
 const limitText = (text, max = null, end = '...') => {
     if (typeof text !== 'string') {
@@ -78,16 +78,16 @@ const getContact = (post) => {
         return;
     }
 
-    if (positiveNumberOr(balance.value, 0) < contactPrice) {
+    if (positiveNumberOr(getBalance(), 0) < contactPrice) {
         globalThis?.Toast?.error('Saldo insuficiente');
         return;
     }
 
-    balance.value = positiveNumberOr(balance.value, 0) - contactPrice ; // TODO: isso é sópra mockup. Lógica e cálculos serão feitos no backend
+    setBalance(positiveNumberOr(getBalance(), 0) - contactPrice); // TODO: isso é sópra mockup. Lógica e cálculos serão feitos no backend
 
-    if (balance.value < 15) {
+    if (getBalance() < 15) {
         globalThis?.Toast?.danger(`Seu saldo está baixo`, 5000);
-        globalThis?.Toast?.info(`Saldo: ${balance.value}`, 5500);
+        globalThis?.Toast?.info(`Saldo: ${getBalance()}`, 5500);
     }
 
     globalThis?.Toast?.success(`Contato liberado!`, 3500);
