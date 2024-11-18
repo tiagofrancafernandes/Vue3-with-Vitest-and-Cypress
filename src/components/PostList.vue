@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import PostItemFactory, { staticFakeItems } from '@/factory/PostItemFactory';
 import { ifObjectOr, toNumberOr, positiveNumberOr } from '@/helpers/helpers';
 import { useBalanceStore } from '@/stores/balance'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia';
 
 import PostListItem from './PostListItem.vue';
 import DocumentationIcon from './icons/IconDocumentation.vue';
@@ -43,6 +43,8 @@ onMounted(() => {
     // posts.value = PostItemFactory.generateItems(15); // dynamic fake items
     posts.value = staticFakeItems;
     refreshBalance();
+
+    console.log('__APP_ENV__', __APP_ENV__);
 });
 
 const fetchMorePosts = () => {

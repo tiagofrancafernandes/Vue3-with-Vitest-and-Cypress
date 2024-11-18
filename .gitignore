@@ -36,3 +36,10 @@ coverage
 *.log
 *.out
 _ide_helper*
+
+.env
+.env.copy
+.env.bkp
+.env.local
+.env.backup
+.env.production

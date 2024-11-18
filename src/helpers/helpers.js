@@ -1,3 +1,5 @@
+import { get } from 'radash';
+
 export const ifObjectOr = (data, defaultValue = null) => {
     return data && typeof data === 'object' && !Array.isArray(data) ? data : defaultValue;
 }
@@ -104,4 +106,32 @@ export const toIntOr = (data, defaultValue = null) => {
 
 export const toFloatOr = (data, defaultValue = null) => {
     return (data !== null && !isNaN(parseFloat(data))) ? parseFloat(data) : defaultValue;
+}
+
+export const generateKey = (key) => {
+    if (key === null) {
+        return null;
+    }
+
+    if (isString(key) || isArray(key)) {
+        return isArray(key) ? key.join('.') : key;
+    }
+
+    return '';
+}
+
+export const dataGet = (data, key = null, defaultValue = null) => {
+    data = ifObjectOrArrayOr(data, {});
+
+    key = generateKey(key);
+
+    if (key === null) {
+        return data;
+    }
+
+    if (key === '') {
+        return defaultValue;
+    }
+
+    return get(data, key, defaultValue);
 }
