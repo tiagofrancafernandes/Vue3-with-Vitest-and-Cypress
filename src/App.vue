@@ -1,6 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
+import AuthService from '@/services/api/auth';
+
+globalThis.AuthService = AuthService; // TODO: remover em prod
+// AuthService.isLogged()
 </script>
 
 <template>
@@ -9,6 +13,7 @@ import HelloWorld from './components/HelloWorld.vue';
             <nav>
                 <RouterLink to="/">Home</RouterLink>
                 <RouterLink to="/about">About</RouterLink>
+                <RouterLink to="/fake">Fake reqs</RouterLink>
             </nav>
         </div>
     </header>

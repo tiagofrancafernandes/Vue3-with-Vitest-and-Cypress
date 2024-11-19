@@ -8,6 +8,23 @@ export const isObject = (data) => {
     return Boolean(data && typeof data === 'object' && !Array.isArray(data));
 }
 
+export const objectFilter = (object, fn = null) => {
+    object = ifObjectOr(object, {});
+    fn = typeof fn === 'function' ? fn : (value, key, i) => value || (value > 0);;
+
+    return Object.fromEntries(
+        Object.entries(object).filter(i => {
+            let [key, value] = i;
+
+            return fn(value, key, i);
+        })
+    );
+}
+
+export const isFunction = (data) => {
+    return Boolean(data && typeof data === 'function');
+}
+
 export const isArray = (data) => {
     return Boolean(data && Array.isArray(data));
 }

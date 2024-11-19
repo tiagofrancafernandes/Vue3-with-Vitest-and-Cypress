@@ -1,3 +1,10 @@
+<script setup lang="js">
+import WalletService from '@/services/api/wallet';
+
+globalThis.WalletService = WalletService
+// console.log(await WalletService.getBalance());
+</script>
+
 <template>
     <main>
         <div class="about">

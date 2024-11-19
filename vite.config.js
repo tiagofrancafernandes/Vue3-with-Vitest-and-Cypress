@@ -23,7 +23,6 @@ export default defineConfig(({ command, mode }) => {
         'API_BASE_URI',
     ];
 
-    // let loadedEnv = loadEnv(mode, process.cwd(), '');
     let loadedEnv = Object.fromEntries(
         Object.entries(loadEnv(mode, process.cwd(), '')).filter(
             i => i[0] && (`${i[0]}`.startsWith('VITE_') || allowedEnvs.includes(i[0]))
@@ -36,6 +35,9 @@ export default defineConfig(({ command, mode }) => {
         // vite config
         define: {
             __APP_ENV__: JSON.stringify(loadedEnv.APP_ENV),
+            __API_BASE_URI__: JSON.stringify(loadedEnv.API_BASE_URI),
+            _env: loadedEnv,
+            env: `${env}`,
         },
         plugins: [vue(), vueDevTools()],
         resolve: {

@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "dotenv": "^16.4.5",
+        "mande": "^2.0.9",
         "pinia": "^2.2.6",
         "radash": "^12.1.0",
         "toastify-js": "^1.12.0",

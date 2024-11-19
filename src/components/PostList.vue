@@ -5,6 +5,11 @@ import { ifObjectOr, toNumberOr, positiveNumberOr } from '@/helpers/helpers';
 import { useBalanceStore } from '@/stores/balance'
 import { storeToRefs } from 'pinia';
 
+import AuthService from '@/services/api/auth';
+
+globalThis.AuthService = AuthService; // TODO: remover em prod
+// AuthService.isLogged()
+
 import PostListItem from './PostListItem.vue';
 import DocumentationIcon from './icons/IconDocumentation.vue';
 import ToolingIcon from './icons/IconTooling.vue';
@@ -17,7 +22,7 @@ import IconHeart from './icons/IconHeart.vue';
 
 const balanceStore = useBalanceStore();
 const { name, doubleCount, balance } = storeToRefs(balanceStore);
-const { increment, refreshBalance, setBalance, getBalance } = balanceStore;
+const { increment, refreshBalance, creditSubtract, getBalance } = balanceStore;
 
 const limitText = (text, max = null, end = '...') => {
     if (typeof text !== 'string') {
@@ -41,17 +46,31 @@ const posts = ref([]);
 
 onMounted(() => {
     // posts.value = PostItemFactory.generateItems(15); // dynamic fake items
-    posts.value = staticFakeItems;
-    refreshBalance();
+    posts.value = JSON.parse(localStorage.getItem('mc_posts') || 'null') || staticFakeItems;
 
-    console.log('__APP_ENV__', __APP_ENV__);
+    if (AuthService.isLogged()) {
+        refreshBalance();
+    }
 });
 
 const fetchMorePosts = () => {
+    if (!AuthService.isLogged()) {
+        return;
+    }
+
     fetchMoreCountPosts.value = positiveNumberOr(fetchMoreCountPosts.value, 5);
-    posts.value.push(...PostItemFactory.generateItems(
-        fetchMoreCountPosts.value
+
+    let currentPosts = posts.value || [];
+    currentPosts.push(...PostItemFactory.generateItems(
+        fetchMoreCountPosts.value,
+        {
+            contactData: null,
+        }
     )); // dynamic fake items
+
+    posts.value = currentPosts;
+
+    localStorage.setItem('mc_posts', JSON.stringify(currentPosts));
 }
 
 const hasMarker = (post) => {
@@ -85,18 +104,22 @@ const getContact = (post) => {
         return;
     }
 
-    setBalance(positiveNumberOr(getBalance(), 0) - contactPrice); // TODO: isso é sópra mockup. Lógica e cálculos serão feitos no backend
+    creditSubtract(contactPrice, {
+        onSuccess: ({response}) => {
+            if (getBalance() < 15) {
+                globalThis?.Toast?.danger(`Seu saldo está baixo`, 5000);
+                globalThis?.Toast?.info(`Saldo: ${getBalance()}`, 5500);
+            }
 
-    if (getBalance() < 15) {
-        globalThis?.Toast?.danger(`Seu saldo está baixo`, 5000);
-        globalThis?.Toast?.info(`Saldo: ${getBalance()}`, 5500);
-    }
+            globalThis?.Toast?.success(`Contato liberado!`, 3500);
 
-    globalThis?.Toast?.success(`Contato liberado!`, 3500);
+            post.contactData = PostItemFactory.generateContactData(); // TODO: aqui buscar os dados desse contato
 
-    post.contactData = PostItemFactory.generateContactData();
+            console.log('getContact', {contactPrice, post, postUid, contactData: post.contactData});
 
-    console.log('getContact', {contactPrice, post, postUid, contactData: post.contactData});
+            localStorage.setItem('mc_posts', JSON.stringify(posts.value));
+        },
+    });
 }
 
 const togglePostMark = (post) => {
@@ -125,15 +148,23 @@ const togglePostMark = (post) => {
     markedPosts.value = markedPosts.value.filter(i => i !== postUid);
     return true;
 }
+
+const refreshAuthToken = () => {
+    AuthService.refreshAuthToken();
+}
 </script>
 
 <template>
     <div class="flex justify-between">
-        <div>Saldo: <span v-text="balance"></span> <button type="button" @click="refreshBalance">Atualizar</button></div>
-        <div class="cursor-pointer user-select-none" @click.prevent.stop="increment">Adicionar créditos</div>
+        <div><button type="button" @click="refreshAuthToken">Auto Login</button></div>
+        <template v-if="AuthService.isLogged()">
+            <div>Saldo: <span v-text="balance"></span> <button type="button" @click="refreshBalance">Atualizar</button></div>
+            <div class="cursor-pointer user-select-none" @click.prevent.stop="increment">Adicionar 100 créditos</div>
+        </template>
     </div>
 
     <template
+         v-if="AuthService.isLogged()"
         v-for="(post, postIndex) in posts"
         :key="postIndex"
     >
@@ -171,7 +202,7 @@ const togglePostMark = (post) => {
         </PostListItem>
     </template>
 
-    <div class="flex">
+    <div  v-if="AuthService.isLogged()" class="flex">
         <button type="button" @click="fetchMorePosts">Carregar mais</button>
         <input type="number" v-model="fetchMoreCountPosts" min="1">
     </div>
