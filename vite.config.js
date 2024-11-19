@@ -37,7 +37,6 @@ export default defineConfig(({ command, mode }) => {
             __APP_ENV__: JSON.stringify(loadedEnv.APP_ENV),
             __API_BASE_URI__: JSON.stringify(loadedEnv.API_BASE_URI),
             _env: loadedEnv,
-            env: `${env}`,
         },
         plugins: [vue(), vueDevTools()],
         resolve: {
