@@ -5,9 +5,9 @@ on:
     branches: [ "develop" ]
   # pull_request:
   #   branches: [ "develop" ]
-  
-permissions:
-  contents: write
+
+# permissions:
+#   contents: write
 
 jobs:
   build-and-deploy:
@@ -34,8 +34,8 @@ jobs:
           build_directory: ./dist
           # branch: gh-pages
           # Public base path string for vite, this affects the routing, history and asset links. Make sure to provide appropriately since Github Pages stores your app in a directory under a subdomain.
-          # public_base_path: # optional, default is 
-          # Which folder do you want your Github Page to use as root directory. Usually it is your build output directory such as ./dist 
+          # public_base_path: # optional, default is
+          # Which folder do you want your Github Page to use as root directory. Usually it is your build output directory such as ./dist
           build_path: ./dist
           # Node env that will be used for the installation of dependencies. It is imperative you use an environment that has 'vite' as dependency. Commonly, that is 'dev'.
           # install_phase_node_env: # optional, default is dev
