@@ -1,5 +1,5 @@
 {
-    "name": "mude-click-v2-web",
+    "name": "vue3-with-vitest-and-cypress",
     "version": "0.0.0",
     "private": true,
     "type": "module",
