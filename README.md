@@ -1,4 +1,6 @@
-# mude-click-v2-web
+[![Deploy Vue with Vite to GitHub Pages](https://github.com/tiagofrancafernandes/Vue3-with-Vitest-and-Cypress/actions/workflows/gh-pages-deploy.yml/badge.svg)](https://github.com/tiagofrancafernandes/Vue3-with-Vitest-and-Cypress/actions/workflows/gh-pages-deploy.yml)
+
+# Vue3-with-Vitest-and-Cypress
 
 This template should help get you started developing with Vue 3 in Vite.
 
